@@ -1,0 +1,2 @@
+#Write a function to print check if the triangle is equilateral or not.
+
