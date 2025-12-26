@@ -20,4 +20,6 @@ def counting_sort(arr):
     return sorted_arr
 
 
+
+
 print(counting_sort([2,4,4,6,2,8]))
