@@ -21,5 +21,6 @@ print(last_digit_of_div_of_factorials(0, 1))
 print(last_digit_of_div_of_factorials(3, 4))
 print(last_digit_of_div_of_factorials(5, 4))
 print(last_digit_of_div_of_factorials(4, 5))
+print(last_digit_of_div_of_factorials(0, 0))
 
 

@@ -1,1 +1,2 @@
-#Write a function to find the maximum length of the subsequence with difference between adjacent elements for the given array.
+# Write a function to find the maximum length of the subsequence with difference between adjacent elements for the given array.
+

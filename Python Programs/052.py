@@ -3,3 +3,4 @@
 def area_of_parallelogram(b, h):
     return b*h
 
+print(area_of_parallelogram(5,5))

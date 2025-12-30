@@ -13,6 +13,6 @@ def find_missing(nums):
 
     return s + 1
 
-print(find_missing([1, 2, 3, 4, 5, 6, 7, 9, 10]))
+print(find_missing([2, 3, 4, 6, 7, 8, 9, 10]))
 
     
