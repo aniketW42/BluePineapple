@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #modal{
+                display:none;
+                padding:10px;
+                border:2px solid black;
+                border-radius:5px;
+                background-color: rgb(255, 215, 215);
+                top: 5%;
+                left: 50%;  
+                position:fixed;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            <h1>Assignment 12</h1>
+            <pre>
+    Task: 
+    Create a button labeled "Show Modal". 
+    When the button is clicked, display a hidden modal (``&lt;div&gt;``) on the page. 
+    The modal should contain a message and a "Close" button. 
+    When the "Close" button is clicked, hide the modal again. 
+            </pre>
+
+            <hr>
+            <div id="modal">
+                <p>Hello!</p>
+                <button id="close">Close</button>
+            </div>
+            <button id="show">Show</button>
+        </div>
+        <script src="assignment12.js"></script>
+    </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="root">
+            <h1>Assignment 7</h1>
+            <pre>
+    Task: 
+    Create a form with the following fields: 
+    - Name (required) 
+    - Email (required, should be a valid email) 
+    - Age (optional, should be a number greater than 18) 
+    On form submission, validate the following: 
+    - The Name field should not be empty. 
+    - The Email field should contain a valid email format. 
+    - If the Age field is provided, it should be greater than 18. 
+    Display error messages for each invalid field. 
+    Prevent form submission if any of the fields are invalid. 
+            </pre>
+            <hr>
+
+           <div style="width:300px; margin:auto">
+             <form id="form" style="display: flex; flex-direction: column; gap:8px;">
+                
+                <label for="name">Name:</label>
+                <input type="text" required placeholder="Enter name" id="name">
+
+                <label for="email">Email:</label>
+                <input type="text" required placeholder="Enter email" id="email">
+
+                <label for="age">Age (Optional):</label>
+                <input type="number" placeholder="Enter age" id="age">
+
+                <ul id="error" style="color:red">
+
+                </ul>
+
+                <button type="submit">Submit</button>
+            </form>
+           </div>
+        </div>
+        <script src="assignment7.js"></script>
+
+    </body>
+</html>
