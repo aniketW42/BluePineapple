@@ -1,18 +1,25 @@
 #Write a python function to check whether the given array is monotonic or not.
 
-# def is_monotonic(arr):
-#     if arr == sorted(arr) or arr == sorted(arr , reverse=True):
-#         return True
-#     else :
-#         return False
+def is_monotonic1(arr):
+    if not arr:
+        return False
 
-def is_monotonic(arr):
-    
-    if arr:
-        prev = arr[0]
-    else : return None
+    sorted_arr = sorted(arr)
+    if arr == sorted_arr or arr == sorted_arr[::-1]:
+        return True
+    else :
+        return False
+
+def is_monotonic2(arr):
+
+    if not arr:
+        return False
+
+    prev = arr[0]
+
     inc = True
     dec = True
+
     for ele in arr:
         if inc and ele>prev:
             dec = False
@@ -23,12 +30,11 @@ def is_monotonic(arr):
         else:
             return False
         prev = ele
+
     return True
 
-
-
-print(is_monotonic([1,2,3,4,5]))
-print(is_monotonic([5,4,4,3]))
-print(is_monotonic([4,5,4,3,2]))
-print(is_monotonic([4]))
-print(is_monotonic([]))
+print(is_monotonic1([1,2,3,4,5]))
+print(is_monotonic1([5,4,4,3]))
+print(is_monotonic1([4,5,4,3,2]))
+print(is_monotonic1([4,4,4,4]))
+print(is_monotonic1([]))
