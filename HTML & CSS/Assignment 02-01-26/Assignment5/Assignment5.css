@@ -119,16 +119,10 @@ nav{
 }
 
 
-/* #profile{
-    max-width:100%;
-    max-height:100%;
-    border-radius:100%;
-    box-shadow: 2px 8px 14px green
-} */
-
 
 #top-right{
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
     width:60%;
