@@ -1,0 +1,23 @@
+body{
+    font-family:arial;
+    margin: 0px 20px 0px 20px ;
+    background-color:wheat;
+}
+
+#heading{
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+.para{
+    background-color:black;
+    color:white;
+    padding:8px
+}
+
+ul{
+    padding-top:18px;
+    padding-bottom:18px;
+    margin:8px;
+    background-color:aqua
+}

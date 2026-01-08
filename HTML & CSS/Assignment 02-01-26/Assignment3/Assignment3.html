@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Assignment3.css"> 
+    </head>
+
+    <body>
+        <div class="div">
+            <table id="emp-table">
+                <h2 id="form-head">Employee Table</h2>
+                <tr class="row">
+                    <th class="cell">ID</th>
+                    <th class="cell">Name</th>
+                    <th class="cell">Department</th>
+                </tr>
+                <tr class="row">
+                    <td class="cell">1</td>
+                    <td class="cell">Tarun</td>
+                    <td class="cell">HR</td>
+                </tr>
+                <tr class="row">
+                    <td class="cell">2</td>
+                    <td class="cell">Vikas</td>
+                    <td class="cell">IT</td>
+                </tr>
+                <tr class="row">
+                    <td class="cell">3</td>
+                    <td class="cell">Pralhad</td>
+                    <td class="cell">Sales</td>
+                </tr>
+                <tr class="row">
+                    <td class="cell">4</td>
+                    <td class="cell">Sima</td>
+                    <td class="cell">Marketing</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="div">
+            <form id="form">
+                <h2 id="form-head">Registration Form</h2>
+                <hr>
+                <div class="form-item">
+                    <label for="fname" class="input-label" >First Name: </label>
+                    <input type="text" class="input" id="fname" placeholder="Enter first Name">
+                </div>
+                <div class="form-item">
+                    <label for="lname" class="input-label">Last Name: </label>
+                    <input type="text" class="input" id="lname" placeholder="Enter last Name">
+                </div>
+                <div class="form-item">
+                    <label for="address" class="input-label">Address: </label>
+                    <input type="text" class="input" id="address" placeholder="Enter Address">
+                </div>
+                <div class="form-item">
+                    <label for="age" class="input-label">Age: </label>
+                    <input type="number" class="input" id="age" placeholder="Enter Age">
+                </div>
+                <div class="form-item">
+                    <label class="input-label">Gender: </label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="gender"> Male</label>
+                        <label><input type="radio" name="gender"> Female</label>
+                    </div>
+                </div>
+                <hr>
+                <button id="submit-btn">Submit</button>
+            </form>
+        </div>
+    </body>
+</html>
+
+<!-- 
+
+Create: 
+- A styled employee table (borders, zebra striping) 
+- A styled registration form 
+Requirements: 
+- Use class selectors 
+- Style inputs, buttons, and focus states 
+- Responsive width using percentage or max-width 
+
+-->
