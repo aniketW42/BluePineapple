@@ -1,0 +1,7 @@
+node_modules/
+data/gallery/*
+data/images/*
+Dockerfile
+.dockerignore
+.git/
+.gitignore

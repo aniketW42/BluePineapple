@@ -1,0 +1,19 @@
+==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+==> Starting service...
+> backend@1.0.0 devStart
+> nodemon main.js
+[nodemon] 3.1.11
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node main.js`
+==> New primary port detected: 3000. Restarting deploy to update network configuration...
+==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+> backend@1.0.0 devStart
+> nodemon main.js
+[nodemon] 3.1.11
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node main.js`
+==> Your service is live 🎉

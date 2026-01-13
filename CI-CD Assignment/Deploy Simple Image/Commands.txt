@@ -1,0 +1,7 @@
+docker build -t restaurant-backend .
+
+docker tag restaurant-backend aniketwa42/restaurant-backend:latest
+
+docker push aniketw42/restaurant-backend:latest
+
+docker run -d -p 3000:3000 --name restaurant-backend-container restaurant-backend 
