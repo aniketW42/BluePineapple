@@ -1,6 +1,6 @@
 # Write a function to add the given list to the given tuples.
 
-def add_to_tuples(tuples: list[tuple], list_to_add) -> list[tuple]:
+def add_to_tuples(tuples: list[tuple], list_to_add: list) -> list[tuple]:
 
     return list((*tup, *list_to_add) for tup in tuples)
 
