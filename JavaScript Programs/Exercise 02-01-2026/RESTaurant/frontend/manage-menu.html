@@ -35,9 +35,10 @@
         <div class="d-flex ">
           <h1 class="fs-3">Manage Menu</h1>
           <button onclick="document.getElementById('add-item-modal').classList.remove('d-none');" type="button" class="btn btn-primary ms-auto">Add Item</button>
+          <button onclick="bulkDelete()" type="button" class="btn btn-danger ms-2">Bulk Delete Items</button>
         </div>
         <hr>
-        <ol id="item-list" class="list-group list-group-numbered"></ol>
+        <ol id="item-list" class="list-group"></ol>
             
         </ol>
 

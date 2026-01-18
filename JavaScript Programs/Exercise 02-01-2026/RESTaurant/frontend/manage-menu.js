@@ -1,108 +1,170 @@
-item_list = document.getElementById("item-list")
+const itemList = document.getElementById("item-list");
+const itemForm = document.getElementById("item-form");
+const modal = document.getElementById("add-item-modal");
+const modalHeader = document.getElementById("modal-header");
 
+const itemIdEl = document.getElementById("item-id");
+const itemNameEl = document.getElementById("item-name");
+const descriptionEl = document.getElementById("description");
+const priceEl = document.getElementById("price");
+const imageEl = document.getElementById("image");
 
-async function get_menu() {
+const API_BASE = "http://localhost:3000/menu";
+
+/* FETCH & RENDER MENU */
+async function getMenu() {
   try {
-    const response = await fetch("http://localhost:3000/menu/get-menu");
+    const response = await fetch(`${API_BASE}/get-menu`);
+    if (!response.ok) throw new Error("Failed to fetch menu");
+
     const data = await response.json();
-    // console.log(data)
-    for(item of data){    
-        if(item.id != undefined){
-            item_list.innerHTML+= `
-                <li class="list-group-item d-flex align-items-start">
-                    <img 
-                        src="http://localhost:3000/images/${item.image}" 
-                        alt="${item.item_name}"
-                        class="rounded me-2 m-1"
-                        width="60"
-                        height="60"
-                        style="object-fit: cover;"
-                    >
+    itemList.innerHTML = "";
 
-                    <div class="flex-grow-1">
-                        <div class="fw-bold">${item.item_name}</div>
+    const fragment = document.createDocumentFragment();
 
-                        <p class="mb-1 text-muted text-truncate" style="max-width: 350px;">
-                            ${item.description}
-                        </p>
+    data.forEach((item) => {
+      const li = document.createElement("li");
+      li.className = "list-group-item d-flex align-items-start";
 
-                        <span class="badge bg-warning text-dark rounded-pill">
-                            ₹${item.price}
-                        </span>
-                    </div>
+      li.innerHTML = `
+        
+        <input type="checkbox" name="tags[]" value="${item.id}" class="p-2 me-1 mt-1">
+        <img 
+          src="http://localhost:3000/images/${item.image}" 
+          alt="${item.item_name}"
+          class="rounded me-2 m-1"
+          width="60"
+          height="60"
+          style="object-fit: cover;"
+        >
 
-                    <div class="d-flex gap-1 ms-3">
-                        <button onClick="editItem('${item.id}')" type="button" class="btn btn-warning btn-sm">Edit</button>
-                        <button onClick="deleteItem('${item.id}')" type="button" class="btn btn-danger btn-sm">Delete</button>
-                    </div>
-                </li>
+        <div class="flex-grow-1">
+          <div class="fw-bold">${item.item_name}</div>
+          <p class="mb-1 text-muted text-truncate" style="max-width: 350px;">
+            ${item.description}
+          </p>
+          <span class="badge bg-warning text-dark rounded-pill">
+            ₹${item.price}
+          </span>
+        </div>
 
-            `
-        }
-    }
+        <div class="d-flex gap-1 ms-3">
+          <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+          <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+        </div>
+      `;
 
+      li.querySelector(".edit-btn").addEventListener("click", () =>
+        editItem(item.id)
+      );
+      li.querySelector(".delete-btn").addEventListener("click", () =>
+        deleteItem(item.id)
+      );
+
+      fragment.appendChild(li);
+    });
+
+    itemList.appendChild(fragment);
   } catch (err) {
-    console.error("Failed to fetch time:", err);
+    console.error("Error fetching menu:", err);
   }
 }
-get_menu()
 
-async function editItem(id){
+getMenu();
 
-    document.getElementById('add-item-modal').classList.remove('d-none');
-    document.getElementById('modal-header').textContent = "Edit Item";
-    const response = await fetch(`http://localhost:3000/menu/get-menu/${id}`);
+/* EDIT ITEM */
+async function editItem(id) {
+  try {
+    modal.classList.remove("d-none");
+    modalHeader.textContent = "Edit Item";
+
+    const response = await fetch(`${API_BASE}/get-menu/${id}`);
+    if (!response.ok) throw new Error("Failed to fetch item");
+
     const item = await response.json();
-    document.getElementById('item-id').textContent = id;
-    document.getElementById("item-name").value = item.item_name;
-    document.getElementById("description").value = item.description;
-    document.getElementById("price").value = item.price;
 
-
+    itemIdEl.textContent = id;
+    itemNameEl.value = item.item_name;
+    descriptionEl.value = item.description;
+    priceEl.value = item.price;
+  } catch (err) {
+    console.error("Error loading item:", err);
+  }
 }
 
-
-document.getElementById("item-form").addEventListener("submit", async function (e) {
+/* ADD / UPDATE ITEM */
+itemForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const formdata = new FormData();
+  const formData = new FormData();
+  formData.append("item_name", itemNameEl.value);
+  formData.append("description", descriptionEl.value);
+  formData.append("price", priceEl.value);
 
-  formdata.append("item_name", document.getElementById("item-name").value);
-  formdata.append("image", document.getElementById("image").files[0]);
-  formdata.append("description", document.getElementById("description").value);
-  formdata.append("price", document.getElementById("price").value);
-  
-
-  if (document.getElementById('modal-header').textContent == "Edit Item"){
-    try{
-      const id = document.getElementById('item-id').textContent
-
-      const res = await fetch(`http://localhost:3000/menu/edit-item/${id}`, {
-          method: "PUT",
-          body: formdata
-      });
-
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  }else{
-    try{
-      const res = await fetch("http://localhost:3000/menu/add-item", {
-          method: "POST",
-          body: formdata
-      });
-    } catch (err) {
-      console.error("Error:", err);
-    }
+  if (imageEl.files[0]) {
+    formData.append("image", imageEl.files[0]);
   }
 
-  
+  const isEdit = modalHeader.textContent === "Edit Item";
+  const url = isEdit
+    ? `${API_BASE}/edit-item/${itemIdEl.textContent}`
+    : `${API_BASE}/add-item`;
+
+  const method = isEdit ? "PUT" : "POST";
+
+  try {
+    const response = await fetch(url, { method, body: formData });
+    if (!response.ok) throw new Error("Failed to save item");
+
+    resetForm();
+    getMenu();
+  } catch (err) {
+    console.error("Error saving item:", err);
+  }
 });
 
-async function deleteItem(id){
-  if( confirm("Are you sure you want to delete this item?")) {
-    const res = await fetch(`http://localhost:3000/menu/delete-item/${id}`,{
-        method: "DELETE"
-    })
+/* DELETE ITEM */
+async function deleteItem(id) {
+  if (!confirm("Are you sure you want to delete this item?")) return;
+
+  try {
+    const response = await fetch(`${API_BASE}/delete-item/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) throw new Error("Failed to delete item");
+
+    getMenu();
+  } catch (err) {
+    console.error("Error deleting item:", err);
   }
+}
+
+async function bulkDelete() {
+  const selectedIds = Array.from(
+    document.querySelectorAll('input[name="tags[]"]:checked')
+  ).map((c) => c.value);
+
+  if (!confirm(`Are you sure you want to delete ${selectedIds.length} item?`))
+    return;
+
+  try {
+    const response = await fetch(`${API_BASE}/bulk-delete`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids: selectedIds }),
+    });
+
+    if (!response.ok) throw new Error("Failed to delete items");
+    getMenu();
+  } catch (err) {
+    console.log("Failed to delete items ", err);
+  }
+}
+
+function resetForm() {
+  itemForm.reset();
+  itemIdEl.textContent = "";
+  modalHeader.textContent = "Add Item";
+  modal.classList.add("d-none");
 }

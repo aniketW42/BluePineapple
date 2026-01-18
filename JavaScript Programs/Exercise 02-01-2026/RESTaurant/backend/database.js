@@ -5,95 +5,116 @@ const { randomUUID } = require("crypto");
 const FILE = "./data/menu.csv";
 
 function readCSV() {
-    return new Promise((resolve, reject) => {
-        const results = [];
+  return new Promise((resolve, reject) => {
+    const results = [];
 
-        fs.createReadStream(FILE, { encoding: "utf8" })
-            .pipe(csv({
-                mapHeaders: ({ header }) =>
-                    header.replace(/^\uFEFF/, "").trim()
-            }))
-            .on("data", data => results.push(data))
-            .on("end", () => resolve(results))
-            .on("error", err => reject(err));
-    });
+    fs.createReadStream(FILE, { encoding: "utf8" })
+      .pipe(
+        csv({
+          mapHeaders: ({ header }) => header.replace(/^\uFEFF/, "").trim(),
+        })
+      )
+      .on("data", (data) => results.push(data))
+      .on("end", () => resolve(results))
+      .on("error", (err) => reject(err));
+  });
 }
 
 function readCSVById(id) {
   return new Promise((resolve, reject) => {
     let found = null;
-    
+
     fs.createReadStream(FILE, { encoding: "utf8" })
-      .pipe(csv({
-        mapHeaders: ({ header }) =>
-          header.replace(/^\uFEFF/, "").trim()
-      }))
+      .pipe(
+        csv({
+          mapHeaders: ({ header }) => header.replace(/^\uFEFF/, "").trim(),
+        })
+      )
       .on("data", (row) => {
         if (row.id == id) {
           found = row;
         }
       })
       .on("end", () => {
-        resolve(found); 
+        resolve(found);
       })
       .on("error", reject);
   });
 }
 
 function writeCSV(data) {
-    const headers = Object.keys(data[0]).join(",");
-    const rows = data.map(obj => Object.values(obj).join(","));
-    const csvData = [headers, ...rows].join("\n");
+  const headers = Object.keys(data[0]).join(",");
+  const rows = data.map((obj) => Object.values(obj).join(","));
+  const csvData = [headers, ...rows].join("\n");
 
-    fs.writeFileSync(FILE, csvData);
+  fs.writeFileSync(FILE, csvData);
 }
 
 async function add_menu(item_name, image, description, price) {
-    const data = await readCSV();
+  const data = await readCSV();
 
-    data.push({
-        id : randomUUID(),
-        item_name,
-        image,
-        description,
-        price
-    });
-    writeCSV(data);
+  data.push({
+    id: randomUUID(),
+    item_name,
+    image,
+    description,
+    price,
+  });
+  writeCSV(data);
 }
 
 async function edit_menu(id, updatedFields) {
-    const data = await readCSV();
-    console.log("2" + updatedFields)
-    let updated = false;
+  const data = await readCSV();
+  console.log("2" + updatedFields);
+  let updated = false;
 
-    const newData = data.map(row => {
-        if (row.id == id) {
-            updated = true;
-            return { ...row, ...updatedFields };
-        }
-        return row;
-    });
-
-    if (!updated) {
-        throw new Error("Item not found");
+  const newData = data.map((row) => {
+    if (row.id == id) {
+      updated = true;
+      return { ...row, ...updatedFields };
     }
+    return row;
+  });
 
-    writeCSV(newData);
+  if (!updated) {
+    throw new Error("Item not found");
+  }
+
+  writeCSV(newData);
 }
 
 async function delete_menu(id) {
-    const data = await readCSV();
+  const data = await readCSV();
 
-    const newData = data.filter(row => row.id != id);
+  const newData = data.filter((row) => row.id != id);
 
-    if (newData.length === data.length) {
-        throw new Error("Item not found");
-    }
+  if (newData.length === data.length) {
+    throw new Error("Item not found");
+  }
 
-    writeCSV(newData);
+  writeCSV(newData);
 }
 
+async function bulk_delete(ids) {
+  const data = await readCSV();
+
+  const idSet = new Set(ids.map(String));
+  const filteredData = data.filter((item) => !idSet.has(String(item.id)));
+
+  const deletedCount = data.length - filteredData.length;
+
+  if (deletedCount > 0) {
+    await writeCSV(filteredData);
+  }
+
+  return deletedCount;
+}
 
 module.exports = {
-    add_menu, readCSV, readCSVById, edit_menu, delete_menu
+  add_menu,
+  readCSV,
+  readCSVById,
+  edit_menu,
+  delete_menu,
+  bulk_delete,
 };
