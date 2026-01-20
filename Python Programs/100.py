@@ -1,25 +1,13 @@
 # Write a function to find the next smallest palindrome of a specified number.
 
 def next_smallest_palindrome(number: int) -> int:
+    res = number
+    while str(res) != str(res)[::-1]:
+        res+=1
 
-    num_len = len(str(number))
-
-    for i in range(num_len//2):
-        str_num = str(number)
-        left = int(str_num[i]) 
-        right = int(str_num[len(str_num) - i - 1]) 
-
-        if left!=right and number%10==0:
-            number = number - 10**i 
-        elif left < right:
-            number -= (right-left) * 10**i
-        elif left > right:
-            number -= 10**(len(str_num)-i-1)
-        # print(number)
-
-    return number
+    return res
     
-        
+    
 
 if __name__ == "__main__":
     print("-->", next_smallest_palindrome(199))
